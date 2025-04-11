@@ -1,0 +1,34 @@
+{
+  "name": "@webcontainer/playwright",
+  "version": "0.0.1",
+  "description": "Playwright utilities for testing applications in WebContainers",
+  "author": "StackBlitz Inc.",
+  "license": "MIT",
+  "type": "module",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/stackblitz/webcontainer-playwright",
+  "bugs": "https://github.com/stackblitz/webcontainer-playwright",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stackblitz/webcontainer-playwright.git"
+  },
+  "keywords": [
+    "testing",
+    "webcontainer",
+    "playwright"
+  ],
+  "packageManager": "pnpm@10.4.1",
+  "scripts": {
+    "build": "echo \"Error: no build specified\"",
+    "test": "echo \"Error: no test specified\"",
+    "lint": "echo \"Error: no linttest specified\"",
+    "typecheck": "echo \"Error: no typecheck specified\""
+  },
+  "dependencies": {},
+  "peerDependencies": {},
+  "devDependencies": {}
+}
