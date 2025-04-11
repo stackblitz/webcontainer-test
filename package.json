@@ -1,34 +1,64 @@
 {
-  "name": "@webcontainer/playwright",
+  "name": "@webcontainer/test",
   "version": "0.0.1",
-  "description": "Playwright utilities for testing applications in WebContainers",
+  "description": "Utilities for testing applications in WebContainers",
   "author": "StackBlitz Inc.",
   "license": "MIT",
   "type": "module",
-  "exports": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./plugin": {
+      "import": {
+        "types": "./dist/plugin.d.ts",
+        "default": "./dist/plugin.js"
+      }
+    }
+  },
   "files": [
     "dist"
   ],
-  "homepage": "https://github.com/stackblitz/webcontainer-playwright",
-  "bugs": "https://github.com/stackblitz/webcontainer-playwright",
+  "homepage": "https://github.com/stackblitz/webcontainer-test",
+  "bugs": "https://github.com/stackblitz/webcontainer-test",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stackblitz/webcontainer-playwright.git"
+    "url": "git+https://github.com/stackblitz/webcontainer-test.git"
   },
   "keywords": [
     "testing",
     "webcontainer",
-    "playwright"
+    "playwright",
+    "vitest"
   ],
   "packageManager": "pnpm@10.4.1",
   "scripts": {
-    "build": "echo \"Error: no build specified\"",
-    "test": "echo \"Error: no test specified\"",
-    "lint": "echo \"Error: no linttest specified\"",
-    "typecheck": "echo \"Error: no typecheck specified\""
+    "build": "tsup",
+    "dev": "tsup --watch --sourcemap",
+    "test": "vitest",
+    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
+    "typecheck": "tsc --noEmit"
   },
-  "dependencies": {},
-  "peerDependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "@webcontainer/api": "^1.5.3"
+  },
+  "peerDependencies": {
+    "vitest": "^3.1"
+  },
+  "devDependencies": {
+    "@blitz/eslint-plugin": "^0.1.4",
+    "@types/node": "^22.14.0",
+    "@vitest/browser": "^3.1.1",
+    "eslint": "^9.24.0",
+    "playwright": "^1.51.1",
+    "prettier": "^3.5.3",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.1"
+  },
+  "prettier": {}
 }
