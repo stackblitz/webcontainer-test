@@ -1,124 +1,108 @@
-# @webcontainer/playwright
+# @webcontainer/test
 
 [![Version][version-badge]][npm-url]
 
-> Playwright utilities for testing applications in WebContainers
+> Utilities for testing applications in WebContainers
 
-[Installation](#installation) | [API](#api)
+[Installation](#installation) | [Configuration](#configuration) | [API](#api)
 
 ---
 
-Test your applications and packages inside WebContainers using Playwright.
+Test your applications and packages inside WebContainers.
 
 ## Installation
 
+Add `@webcontainer/test` to your development dependencies.
+
 ```sh
-$ npm install --save-dev @webcontainer/playwright
+$ npm install --save-dev @webcontainer/test
 ```
 
-`@playwright/test` is required as peer dependency:
+Vitest is also required as peer dependency.
 
 ```sh
-$ npm install --save-dev @playwright/test
+$ npm install --save-dev vitest @vitest/browser
+```
+
+## Configuration
+
+Add `vitestWebcontainers` plugin in your Vitest config and enable browser mode:
+
+```ts
+import { defineConfig } from "vitest/config";
+import { vitestWebcontainers } from "@webcontainer/test/plugin";
+
+export default defineConfig({
+  plugins: [vitestWebcontainers()],
+  test: {
+    browser: {
+      enabled: true,
+      provider: "playwright",
+      instances: [{ browser: "chromium" }],
+    },
+  },
+});
 ```
 
 ## API
 
-### Fixtures
-
-WebContainer utilities are defined as [Playwright fixtures](https://playwright.dev/docs/test-fixtures). You can import pre-defined `test()`, or import each fixture manually and extend your own `test` with each fixture.
+Webcontainer utilities are exposed as [test fixtures](https://vitest.dev/guide/test-context.html#test-extend).
 
 ```ts
-// Pre-defined test()
-import { test } from "@webcontainer/playwright";
-```
+import { test } from "@webcontainer/test";
 
-```ts
-// Manual import of each fixture
-import {
-  Editor,
-  Preview,
-  Terminal,
-  WebContainer,
-} from "@webcontainer/playwright";
-import { test as base } from "@playwright/test";
-
-const test = base.extend<{
-  editor: Editor;
-  preview: Preview;
-  terminal: Terminal;
-  webcontainer: WebContainer;
-}>({
-  editor: async ({ page }, use) => {
-    use(new Editor(page));
-  },
-  preview: async ({ page }, use) => {
-    use(new Preview(page));
-  },
-  terminal: async ({ page }, use) => {
-    use(new Terminal(page));
-  },
-  webcontainer: async ({ page }, use) => {
-    use(new WebContainer(page));
-  },
-});
-
-export { test };
-```
-
-You can access each fixture in your test cases:
-
-```ts
-import { test } from "@webcontainer/playwright"; // or your own `test` setup
-
-test("user can open Vite TypeScript starter", async ({
-  page,
-  editor,
+test("run development server inside webcontainer", async ({
+  webcontainer,
   preview,
-  terminal,
 }) => {
-  await page.goto("/");
+  await webcontainer.mount("path/to/project");
 
-  await editor.getByFile("package.json", /"vite": "^6.0.11"/);
-  await editor.getByFile("src/main.ts", /<h1>Hello Vite<\/h1>/);
+  await webcontainer.runCommand("npm", ["install"]);
+  webcontainer.runCommand("npm", ["run", "dev"]);
 
-  await terminal.getByText("VITE v6.0.11 ready");
-
-  await preview.getByRole("heading", { level: 1, name: "Hello Vite" });
+  await preview.getByRole("heading", { level: 1, name: "Hello Vite!" });
 });
 ```
 
-#### Editor
-
-##### `getByFile`
-
-Get file by its name and content.
-
-```ts
-async function getByFile(filename: string, content: RegExp | string): Locator;
-```
-
-#### Preview
+#### `preview`
 
 ##### `getByRole`
 
-Playwright's [`getByRole`](https://playwright.dev/docs/api/class-framelocator#frame-locator-get-by-role) that's scoped to the preview `<iframe>`.
+Vitest's [`getByRole`](https://vitest.dev/guide/browser/locators.html#getbyrole) that's scoped to the preview window.
 
-#### Terminal
+```ts
+await preview.getByRole("heading", { level: 1, name: "Hello Vite!" });
+```
 
 ##### `getByText`
 
-Playwright's [`getByText`](https://playwright.dev/docs/api/class-framelocator#frame-locator-get-by-role) that's scoped to the terminal.
+Vitest's [`getByText`](https://vitest.dev/guide/browser/locators.html#getbytext) that's scoped to the preview window.
 
-#### WebContainer
+```ts
+await preview.getByText("Hello Vite!");
+```
+
+#### `webcontainer`
+
+##### `mount`
+
+Mount file system inside webcontainer.
+
+Accepts a path that is relative to the [project root](https://vitest.dev/config/#root), or inlined [`FileSystemTree`](https://webcontainers.io/api#filesystemtree).
+
+```ts
+await webcontainer.mount("/path/to/project");
+```
 
 ##### `runCommand`
 
-Run command inside WebContainer process.
+Run command inside webcontainer. Returns command output.
 
 ```ts
-async function runCommand(command: string): Promise<void>;
+await webcontainer.runCommand("npm", ["install"]);
+
+const files = await webcontainer.runCommand("ls", ["-l"]);
 ```
 
-[version-badge]: https://img.shields.io/npm/v/@webcontainer/playwright
-[npm-url]: https://www.npmjs.com/package/@webcontainer/playwright
+[version-badge]: https://img.shields.io/npm/v/@webcontainer/test
+[npm-url]: https://www.npmjs.com/package/@webcontainer/test

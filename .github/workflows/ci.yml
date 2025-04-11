@@ -35,11 +35,15 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      - name: Install Playwright Dependencies
+        run: pnpm exec playwright install chromium --with-deps
+
       - name: Test
         run: pnpm test
 
   publish-preview:
     runs-on: ubuntu-latest
+    if: ${{ false }} # TODO: Set up preview deployments
 
     steps:
       - uses: actions/checkout@v4
