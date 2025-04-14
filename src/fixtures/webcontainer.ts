@@ -7,6 +7,7 @@ import {
 export class WebContainer {
   private _instancePromise?: WebContainerApi;
   private _isReady: Promise<void>;
+  private _onExit: (() => Promise<unknown>)[] = [];
 
   constructor() {
     this._isReady = WebContainerApi.boot({}).then((instance) => {
@@ -47,6 +48,8 @@ export class WebContainer {
   }
 
   async teardown() {
+    await Promise.all(this._onExit.map((fn) => fn()));
+
     this._instance.teardown();
     this._instancePromise = undefined;
   }
@@ -63,6 +66,16 @@ export class WebContainer {
         },
       }),
     );
+
+    // make sure any long-living processes are terminated before teardown, e.g. "npm run dev" commands
+    this._onExit.push(() => {
+      // @ts-ignore -- internal
+      if (process._process != null) {
+        process.kill();
+      }
+
+      return process.exit;
+    });
 
     await process.exit;
 
