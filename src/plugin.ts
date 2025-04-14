@@ -1,6 +1,5 @@
 import type { Vite } from "vitest/node";
 import { readDirectory } from "./commands";
-import "./types.d.ts";
 
 const COEP = "Cross-Origin-Embedder-Policy";
 const COOP = "Cross-Origin-Opener-Policy";
