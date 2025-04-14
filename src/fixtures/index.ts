@@ -24,6 +24,17 @@ export const test = base.extend<{
 
     await use(webcontainer);
 
+    addEventListener("unhandledrejection", (event) => {
+      if (
+        event.reason instanceof Error &&
+        event.reason.message === "Process aborted"
+      ) {
+        return event.preventDefault();
+      }
+
+      return Promise.reject(event.reason);
+    });
+
     await webcontainer.teardown();
   },
 });
