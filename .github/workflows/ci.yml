@@ -39,7 +39,7 @@ jobs:
         run: pnpm typecheck
 
       - name: Install Playwright Dependencies
-        run: pnpm exec playwright install chromium firefox --with-deps
+        run: pnpm exec playwright install chromium firefox --with-deps --only-shell
 
       - name: Test
         run: pnpm test
@@ -48,7 +48,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: vitest-screenshots
+          name: vitest-screenshots-${{ matrix.node-version }}
           path: test/__screenshots__
           retention-days: 30
 

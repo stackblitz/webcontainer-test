@@ -1,5 +1,6 @@
 import { commands } from "@vitest/browser/context";
 import {
+  type BufferEncoding,
   type FileSystemTree,
   WebContainer as WebContainerApi,
 } from "@webcontainer/api";
@@ -50,6 +51,9 @@ export class WebContainer {
   async teardown() {
     await Promise.all(this._onExit.map((fn) => fn()));
 
+    // @ts-ignore -- internal
+    await this._instance._instance.teardown();
+
     this._instance.teardown();
     this._instancePromise = undefined;
   }
@@ -80,5 +84,29 @@ export class WebContainer {
     await process.exit;
 
     return output.trim();
+  }
+
+  async readFile(path: string, encoding: BufferEncoding = "utf8") {
+    return this._instance.fs.readFile(path, encoding);
+  }
+
+  async writeFile(path: string, data: string, encoding = "utf8") {
+    return this._instance.fs.writeFile(path, data, { encoding });
+  }
+
+  async rename(oldPath: string, newPath: string) {
+    return this._instance.fs.rename(oldPath, newPath);
+  }
+
+  async mkdir(path: string) {
+    return this._instance.fs.mkdir(path);
+  }
+
+  async readdir(path: string) {
+    return this._instance.fs.readdir(path);
+  }
+
+  async rm(path: string) {
+    return this._instance.fs.rm(path);
   }
 }
