@@ -4,7 +4,8 @@
     "module": "ESNext",
     "target": "ESNext",
     "moduleResolution": "bundler",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "stripInternal": true
   },
   "include": ["src", "test"]
 }

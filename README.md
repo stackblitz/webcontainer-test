@@ -80,6 +80,14 @@ Vitest's [`getByText`](https://vitest.dev/guide/browser/locators.html#getbytext)
 await preview.getByText("Hello Vite!");
 ```
 
+##### `locator`
+
+Vitest's [`locator`](https://vitest.dev/guide/browser/locators.html) of the preview window.
+
+```ts
+await preview.locator.hover();
+```
+
 #### `webcontainer`
 
 ##### `mount`
@@ -90,6 +98,15 @@ Accepts a path that is relative to the [project root](https://vitest.dev/config/
 
 ```ts
 await webcontainer.mount("/path/to/project");
+
+await webcontainer.mount({
+  "package.json": { file: { contents: '{ "name": "example-project" }' } },
+  src: {
+    directory: {
+      "index.ts": { file: { contents: "export default 'Hello!';" } },
+    },
+  },
+});
 ```
 
 ##### `runCommand`
@@ -100,6 +117,54 @@ Run command inside webcontainer. Returns command output.
 await webcontainer.runCommand("npm", ["install"]);
 
 const files = await webcontainer.runCommand("ls", ["-l"]);
+```
+
+##### `readFile`
+
+WebContainer's [`readFile`](https://webcontainers.io/guides/working-with-the-file-system#readfile) method.
+
+```ts
+const content = await webcontainer.readFile("/package.json");
+```
+
+##### `writeFile`
+
+WebContainer's [`writeFile`](https://webcontainers.io/guides/working-with-the-file-system#writefile) method.
+
+```ts
+await webcontainer.writeFile("/main.ts", "console.log('Hello world!')");
+```
+
+##### `rename`
+
+WebContainer's [`rename`](https://webcontainers.io/guides/working-with-the-file-system#rename) method.
+
+```ts
+await webcontainer.rename("/before.ts", "/after.ts");
+```
+
+##### `mkdir`
+
+WebContainer's [`mkdir`](https://webcontainers.io/guides/working-with-the-file-system#mkdir) method.
+
+```ts
+await webcontainer.mkdir("/src/components");
+```
+
+##### `readdir`
+
+WebContainer's [`readdir`](https://webcontainers.io/guides/working-with-the-file-system#readdir) method.
+
+```ts
+const contents = await webcontainer.readdir("/src");
+```
+
+##### `rm`
+
+WebContainer's [`rm`](https://webcontainers.io/guides/working-with-the-file-system#rm) method.
+
+```ts
+await webcontainer.rm("/node_modules");
 ```
 
 [version-badge]: https://img.shields.io/npm/v/@webcontainer/test

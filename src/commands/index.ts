@@ -13,7 +13,7 @@ export const readDirectory: BrowserCommand<[directory: string]> = async (
 
   if (!resolved.startsWith(root)) {
     throw new Error(
-      `[vitest:webcontainers] Cannot read files outside project root: \n${JSON.stringify(
+      `[vitest:webcontainers] Cannot read files outside project root:\n${JSON.stringify(
         { directory, resolved },
         null,
         2,

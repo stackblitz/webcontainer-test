@@ -3,6 +3,26 @@ import { test as base } from "vitest";
 import { Preview } from "./preview";
 import { WebContainer } from "./webcontainer";
 
+/**
+ * Pre-defined [`test()` function](https://vitest.dev/guide/test-context.html#extend-test-context) with WebContainer fixtures.
+ *
+ * @example
+ * ```ts
+ * import { test } from "@webcontainer/test";
+ *
+ * test("run development server inside webcontainer", async ({
+ *   webcontainer,
+ *   preview,
+ * }) => {
+ *   await webcontainer.mount("path/to/project");
+ *
+ *   await webcontainer.runCommand("npm", ["install"]);
+ *   webcontainer.runCommand("npm", ["run", "dev"]);
+ *
+ *   await preview.getByRole("heading", { level: 1, name: "Hello Vite!" });
+ * });
+ * ```
+ */
 export const test = base.extend<{
   preview: Preview;
   webcontainer: WebContainer;
