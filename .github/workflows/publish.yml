@@ -11,6 +11,9 @@ on:
           - minor
           - major
 
+env:
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/ms-playwright
+
 jobs:
   build:
     runs-on: ubuntu-latest
