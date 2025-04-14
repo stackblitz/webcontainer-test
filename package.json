@@ -39,7 +39,8 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch --sourcemap",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest --project Chromium --browser.provider preview --browser.headless=false",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "typecheck": "tsc --noEmit"
   },
@@ -58,8 +59,7 @@
     "prettier": "^3.5.3",
     "tsup": "^8.4.0",
     "typescript": "^5.8.3",
-    "vitest": "^3.1.1",
-    "webdriverio": "^9.12.5"
+    "vitest": "^3.1.1"
   },
   "prettier": {}
 }
