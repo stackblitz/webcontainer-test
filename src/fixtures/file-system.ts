@@ -8,7 +8,7 @@ import type {
 export class FileSystem {
   /** @internal */
   protected get _instance(): WebContainer {
-    throw new Error("_instance should be overwritte");
+    throw new Error("_instance should be overwritten");
   }
 
   /**

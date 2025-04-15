@@ -1,5 +1,7 @@
 import { WebContainer as WebContainerApi } from "@webcontainer/api";
+
 import { FileSystem } from "./file-system";
+import { ProcessWrap } from "./process";
 
 export class WebContainer extends FileSystem {
   /** @internal */
@@ -55,33 +57,18 @@ export class WebContainer extends FileSystem {
 
   /**
    * Run command inside WebContainer.
-   * Returns the output of the command.
+   * See [`runCommand` documentation](https://github.com/stackblitz/webcontainer-test#runcommand) for usage examples.
    */
-  async runCommand(command: string, args: string[] = []) {
-    let output = "";
-
-    const process = await this._instance.spawn(command, args, { output: true });
-
-    process.output.pipeTo(
-      new WritableStream({
-        write(data) {
-          output += data;
-        },
-      }),
+  runCommand(
+    command: string,
+    args: string[] = [],
+  ): PromiseLike<string> & ProcessWrap {
+    const proc = new ProcessWrap(
+      this._instance.spawn(command, args, { output: true }),
     );
 
-    // make sure any long-living processes are terminated before teardown, e.g. "npm run dev" commands
-    this._onExit.push(() => {
-      // @ts-ignore -- internal
-      if (process._process != null) {
-        process.kill();
-      }
+    this._onExit.push(() => proc.exit());
 
-      return process.exit;
-    });
-
-    await process.exit;
-
-    return output.trim();
+    return proc;
   }
 }

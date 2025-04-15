@@ -56,9 +56,10 @@ test("run development server inside webcontainer", async ({
   await webcontainer.mount("path/to/project");
 
   await webcontainer.runCommand("npm", ["install"]);
-  webcontainer.runCommand("npm", ["run", "dev"]);
+  const { exit } = webcontainer.runCommand("npm", ["run", "dev"]);
 
   await preview.getByRole("heading", { level: 1, name: "Hello Vite!" });
+  await exit();
 });
 ```
 
@@ -111,12 +112,35 @@ await webcontainer.mount({
 
 ##### `runCommand`
 
-Run command inside webcontainer. Returns command output.
+Run command inside webcontainer.
 
 ```ts
 await webcontainer.runCommand("npm", ["install"]);
+```
 
+Calling `await` on the result resolves into the command output:
+
+```ts
 const files = await webcontainer.runCommand("ls", ["-l"]);
+```
+
+To write into the output stream, use `write` method of the non-awaited output.
+
+To verify output of continuous stream, use `waitForText()`:
+
+```ts
+const { write, waitForText, exit } = webcontainer.runCommand("npm", [
+  "create",
+  "vite",
+]);
+
+await waitForText("What would you like to call your project?");
+await write("Example Project\n");
+
+await waitForText("Where should the project be created?");
+await write("./example-project\n");
+
+await exit();
 ```
 
 ##### `readFile`
