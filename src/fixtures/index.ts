@@ -17,9 +17,10 @@ import { WebContainer } from "./webcontainer";
  *   await webcontainer.mount("path/to/project");
  *
  *   await webcontainer.runCommand("npm", ["install"]);
- *   webcontainer.runCommand("npm", ["run", "dev"]);
+ *   const { exit } = webcontainer.runCommand("npm", ["run", "dev"]);
  *
  *   await preview.getByRole("heading", { level: 1, name: "Hello Vite!" });
+ *   await exit();
  * });
  * ```
  */
