@@ -63,6 +63,18 @@ test("run development server inside webcontainer", async ({
 });
 ```
 
+To use test hooks, you can import fixture typings:
+
+```ts
+import { test, type TestContext } from "@webcontainer/test";
+import { beforeEach } from "vitest";
+
+// Mount project before each test
+beforeEach<TextContext>(({ webcontainer }) => {
+  await webcontainer.mount("projects/example");
+});
+```
+
 #### `preview`
 
 ##### `getByRole`

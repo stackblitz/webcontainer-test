@@ -3,6 +3,11 @@ import { test as base } from "vitest";
 import { Preview } from "./preview";
 import { WebContainer } from "./webcontainer";
 
+export interface TestContext {
+  preview: Preview;
+  webcontainer: WebContainer;
+}
+
 /**
  * Pre-defined [`test()` function](https://vitest.dev/guide/test-context.html#extend-test-context) with WebContainer fixtures.
  *
@@ -24,10 +29,7 @@ import { WebContainer } from "./webcontainer";
  * });
  * ```
  */
-export const test = base.extend<{
-  preview: Preview;
-  webcontainer: WebContainer;
-}>({
+export const test = base.extend<TestContext>({
   preview: async ({ webcontainer }, use) => {
     await webcontainer.wait();
 

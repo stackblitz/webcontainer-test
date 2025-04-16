@@ -1,1 +1,1 @@
-export { test } from "./fixtures";
+export { test, type TestContext } from "./fixtures";
