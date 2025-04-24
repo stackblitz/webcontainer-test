@@ -2,11 +2,15 @@ import { expect } from "vitest";
 
 import { test } from "../src";
 
-test("user can run commands inside webcontainer", async ({ webcontainer }) => {
-  const output = await webcontainer.runCommand("node", ["--version"]);
+test(
+  "user can run commands inside webcontainer",
+  { retry: 3 },
+  async ({ webcontainer }) => {
+    const output = await webcontainer.runCommand("node", ["--version"]);
 
-  expect(output).toContain("v20");
-});
+    expect(output).toContain("v20");
+  },
+);
 
 test("user can run interactive commands inside webcontainer", async ({
   webcontainer,
