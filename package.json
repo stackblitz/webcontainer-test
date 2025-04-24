@@ -45,7 +45,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@webcontainer/api": "^1.5.3"
+    "@webcontainer/api": "^1.6.1"
   },
   "peerDependencies": {
     "@vitest/browser": "^3.1",

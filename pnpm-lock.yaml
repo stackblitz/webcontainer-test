@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@webcontainer/api':
-        specifier: ^1.5.3
-        version: 1.5.3
+        specifier: ^1.6.1
+        version: 1.6.1
     devDependencies:
       '@blitz/eslint-plugin':
         specifier: ^0.1.4
@@ -613,8 +613,8 @@ packages:
     resolution: {integrity: sha512-yddJj7VyA3kGuAuDU63ZdRBK4D1jwSU+52KwlZtOeqDdT/i6KAwRVYNYMwwmsGuM4GpY3q5h944YylBQNkKkjQ==}
     engines: {node: '>=18.20.0'}
 
-  '@webcontainer/api@1.5.3':
-    resolution: {integrity: sha512-f6Oq3ohtSC5RYABhpN8aVOVHpcKvJ1fB1jjuvODTBU5u6BcroYEhphnrywdw8RO+2Vy5ekCdKe5D4dCMdMSrzA==}
+  '@webcontainer/api@1.6.1':
+    resolution: {integrity: sha512-2RS2KiIw32BY1Icf6M1DvqSmcon9XICZCDgS29QJb2NmF12ZY2V5Ia+949hMKB3Wno+P/Y8W+sPP59PZeXSELg==}
 
   '@zip.js/zip.js@2.7.60':
     resolution: {integrity: sha512-vA3rLyqdxBrVo1FWSsbyoecaqWTV+vgPRf0QKeM7kVDG0r+lHUqd7zQDv1TO9k4BcAoNzNDSNrrel24Mk6addA==}
@@ -1569,6 +1569,7 @@ packages:
   node-domexception@1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
     engines: {node: '>=10.5.0'}
+    deprecated: Use your platform's native DOMException instead
 
   node-fetch@3.3.2:
     resolution: {integrity: sha512-dRB78srN/l6gqWulah9SrxeYnxeddIG30+GOqK/9OlLVyLg3HPnr6SqOWTWOXKRwC2eGYCkZ59NNuSgvSrpgOA==}
@@ -2930,7 +2931,7 @@ snapshots:
       - supports-color
     optional: true
 
-  '@webcontainer/api@1.5.3': {}
+  '@webcontainer/api@1.6.1': {}
 
   '@zip.js/zip.js@2.7.60':
     optional: true
