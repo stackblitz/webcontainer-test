@@ -115,11 +115,7 @@ export class ProcessWrap {
   exit = async () => {
     await this._isReady;
 
-    // @ts-ignore -- internal check
-    if (this._webcontainerProcess._process != null) {
-      this._webcontainerProcess.kill();
-    }
-
+    this._webcontainerProcess.kill();
     this._listeners.splice(0);
 
     return this.isDone;

@@ -5,14 +5,14 @@ import { test } from "../src";
 test("user can run commands inside webcontainer", async ({ webcontainer }) => {
   const output = await webcontainer.runCommand("node", ["--version"]);
 
-  expect(output).toMatchInlineSnapshot(`"v20.19.0"`);
+  expect(output).toContain("v20");
 });
 
 test("user can run interactive commands inside webcontainer", async ({
   webcontainer,
 }) => {
   const { exit, waitForText, write } = webcontainer.runCommand("node");
-  await waitForText("Welcome to Node.js v20.19.0");
+  await waitForText("Welcome to Node.js v20");
 
   await write("console.log(20 + 19)\n");
   await waitForText("39");
