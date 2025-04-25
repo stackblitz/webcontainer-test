@@ -22,23 +22,48 @@ export class ProcessWrap {
   isDone: Promise<void>;
 
   constructor(promise: Promise<WebContainerProcess>) {
+    let isExitted = false;
     let setDone: () => void = () => undefined;
-    this.isDone = new Promise((resolve) => (setDone = resolve));
+
+    this.isDone = new Promise((resolve) => {
+      setDone = () => {
+        resolve();
+        isExitted = true;
+      };
+    });
 
     this._isReady = promise.then((webcontainerProcess) => {
       this._webcontainerProcess = webcontainerProcess;
       this._writer = webcontainerProcess.input.getWriter();
 
-      webcontainerProcess.exit.then(() => setDone());
+      webcontainerProcess.exit.then(setDone);
 
-      this._webcontainerProcess.output.pipeTo(
-        new WritableStream({
-          write: (data) => {
-            this._output += data;
-            this._listeners.forEach((fn) => fn(data));
-          },
-        }),
-      );
+      const reader = this._webcontainerProcess.output.getReader();
+
+      const read = async () => {
+        while (true) {
+          const { done, value } = await reader.read();
+
+          if (isExitted && !done) {
+            console.warn(
+              `[webcontainer-test]: Closed process keeps writing to output. Closing reader forcefully. \n` +
+                `                     Received: "${value}".`,
+            );
+            await reader.cancel();
+            break;
+          }
+
+          // webcontainer process never reaches here, but for future-proofing let's exit
+          if (done) {
+            break;
+          }
+
+          this._output += value;
+          this._listeners.forEach((fn) => fn(value));
+        }
+      };
+
+      void read();
     });
   }
 
