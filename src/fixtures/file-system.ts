@@ -17,10 +17,13 @@ export class FileSystem {
    */
   async mount(filesOrPath: string | FileSystemTree) {
     if (typeof filesOrPath === "string") {
-      filesOrPath = await commands.readDirectory(filesOrPath);
+      const tree = await commands.readDirectory(filesOrPath);
+      const binary = Uint8Array.from(atob(tree), (c) => c.charCodeAt(0));
+
+      return await this._instance.mount(binary);
     }
 
-    return await this._instance.mount(filesOrPath as FileSystemTree);
+    return await this._instance.mount(filesOrPath);
   }
 
   /**
