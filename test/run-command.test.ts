@@ -43,3 +43,22 @@ test("user can see timeout errors with clear description", async ({
 
   await exit();
 });
+
+test("user can listen for stream's chunks", async ({ webcontainer }) => {
+  const { isDone, onData } = webcontainer.runCommand("node", [
+    "--eval",
+    "console.log('First'); setTimeout(() => console.log('Second'), 1_000);",
+  ]);
+
+  const data: string[] = [];
+  onData((chunk) => data.push(chunk.trim()));
+
+  await isDone;
+
+  expect(data).toMatchInlineSnapshot(`
+    [
+      "First",
+      "Second",
+    ]
+  `);
+});

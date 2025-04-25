@@ -11,7 +11,7 @@ export class ProcessWrap {
   private _output: string = "";
 
   /** @internal */
-  private _listeners: (() => void)[] = [];
+  private _listeners: ((chunk: string) => void)[] = [];
 
   /** @internal */
   private _writer?: ReturnType<WebContainerProcess["input"]["getWriter"]>;
@@ -35,7 +35,7 @@ export class ProcessWrap {
         new WritableStream({
           write: (data) => {
             this._output += data;
-            this._listeners.forEach((fn) => fn());
+            this._listeners.forEach((fn) => fn(data));
           },
         }),
       );
@@ -107,6 +107,13 @@ export class ProcessWrap {
 
       this._listeners.push(listener);
     });
+  };
+
+  /**
+   * Listen for data stream chunks.
+   */
+  onData = (listener: (chunk: string) => void) => {
+    this._listeners.push(listener);
   };
 
   /**
