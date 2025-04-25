@@ -155,6 +155,17 @@ await write("./example-project\n");
 await exit();
 ```
 
+To capture each output chunk one-by-one, you can use `onData` callback.
+This can be useful when debugging output of the stream.
+
+```ts
+const { isDone, onData } = webcontainer.runCommand("npm", ["run", "build"]);
+
+onData((chunk) => console.log(chunk));
+
+await isDone;
+```
+
 ##### `readFile`
 
 WebContainer's [`readFile`](https://webcontainers.io/guides/working-with-the-file-system#readfile) method.
