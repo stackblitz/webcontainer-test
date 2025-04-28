@@ -67,4 +67,14 @@ export class FileSystem {
   async rm(path: string) {
     return this._instance.fs.rm(path);
   }
+
+  /** @internal */
+  async export() {
+    return await this._instance.export("./", { format: "binary" });
+  }
+
+  /** @internal */
+  async restore(snapshot: Uint8Array) {
+    return await this._instance.mount(new Uint8Array(snapshot));
+  }
 }

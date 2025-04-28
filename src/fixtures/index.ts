@@ -6,6 +6,10 @@ import { WebContainer } from "./webcontainer";
 export interface TestContext {
   preview: Preview;
   webcontainer: WebContainer;
+  setup: (callback: () => Promise<void>) => Promise<void>;
+
+  /** @internal */
+  _internalState: { current: Uint8Array | undefined };
 }
 
 /**
@@ -29,7 +33,10 @@ export interface TestContext {
  * });
  * ```
  */
-export const test = base.extend<TestContext>({
+export const test = base.extend<Omit<TestContext, "_internalState">>({
+  // @ts-ignore -- intentionally untyped, excluded from public API
+  _internalState: { current: undefined },
+
   preview: async ({ webcontainer }, use) => {
     await webcontainer.wait();
 
@@ -59,5 +66,22 @@ export const test = base.extend<TestContext>({
     });
 
     await webcontainer.teardown();
+  },
+
+  // @ts-ignore -- intentionally untyped, excluded from public API
+  setup: async ({ webcontainer, _internalState }, use) => {
+    const internalState = _internalState as TestContext["_internalState"];
+
+    await use(async (callback) => {
+      if (internalState.current) {
+        await webcontainer.restore(internalState.current);
+        return;
+      }
+
+      await callback();
+
+      // save current state in fixture
+      internalState.current = await webcontainer.export();
+    });
   },
 });
