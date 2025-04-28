@@ -44,7 +44,11 @@ export default defineConfig({
 
 ## API
 
-Webcontainer utilities are exposed as [test fixtures](https://vitest.dev/guide/test-context.html#test-extend).
+Webcontainer utilities are exposed as [test fixtures](https://vitest.dev/guide/test-context.html#test-extend):
+
+- [`preview`](#preview)
+- [`webcontainer`](#webcontainer)
+- [`setup`](#setup)
 
 ```ts
 import { test } from "@webcontainer/test";
@@ -70,7 +74,7 @@ import { test, type TestContext } from "@webcontainer/test";
 import { beforeEach } from "vitest";
 
 // Mount project before each test
-beforeEach<TextContext>(({ webcontainer }) => {
+beforeEach<TestContext>(({ webcontainer }) => {
   await webcontainer.mount("projects/example");
 });
 ```
@@ -212,6 +216,35 @@ WebContainer's [`rm`](https://webcontainers.io/guides/working-with-the-file-syst
 
 ```ts
 await webcontainer.rm("/node_modules");
+```
+
+### `setup`
+
+If you have repetitive steps that are needed by multiple test cases, you can improve test performance by using `setup`.
+
+It calls the given function once, saves WebContainer state in a snapshot, and restores that snapshot before each test.
+
+```ts
+import { test, type TestContext } from "@webcontainer/test";
+import { beforeEach, expect, onTestFinished } from "vitest";
+
+beforeEach<TestContext>(async ({ webcontainer, setup }) => {
+  // This is run once and cached for each next run
+  await setup(async () => {
+    await webcontainer.mount("./svelte-project");
+    await webcontainer.runCommand("npm", ["install"]);
+  });
+});
+
+// No need to re-mount file system or re-run install in test cases
+test("user can build project", async ({ webcontainer }) => {
+  await webcontainer.runCommand("npm", ["run", "build"]);
+});
+
+test("user can start project", async ({ webcontainer, preview }) => {
+  void webcontainer.runCommand("npm", ["run", "dev"]);
+  await preview.getByRole("heading", { name: "Welcome to SvelteKit" });
+});
 ```
 
 [version-badge]: https://img.shields.io/npm/v/@webcontainer/test
