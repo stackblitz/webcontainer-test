@@ -5,6 +5,8 @@ export default defineConfig({
   plugins: [vitestWebcontainers()],
 
   test: {
+    reporters: "verbose",
+
     browser: {
       enabled: true,
       provider: "playwright",
