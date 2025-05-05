@@ -16,8 +16,16 @@ export class WebContainer extends FileSystem {
   constructor() {
     super();
 
-    this._isReady = WebContainerApi.boot({}).then((instance) => {
-      this._instancePromise = instance;
+    this._isReady = new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        reject(new Error("WebContainer boot timed out in 30s"));
+      }, 30_000);
+
+      WebContainerApi.boot({}).then((instance) => {
+        clearTimeout(timeout);
+        this._instancePromise = instance;
+        resolve();
+      });
     });
   }
 
