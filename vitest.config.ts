@@ -1,8 +1,8 @@
 import { defineConfig } from "vitest/config";
-import { vitestWebcontainers } from "./src/plugin";
+import { vitestWebContainers } from "./src/plugin";
 
 export default defineConfig({
-  plugins: [vitestWebcontainers()],
+  plugins: [vitestWebContainers()],
 
   test: {
     reporters: "verbose",

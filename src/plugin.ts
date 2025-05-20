@@ -8,7 +8,7 @@ const COOP = "Cross-Origin-Opener-Policy";
  * Vitest [plugin](https://vitest.dev/advanced/api/plugin.html#plugin-api) for configuring
  * WebContainer related options.
  */
-export function vitestWebcontainers(): Vite.Plugin {
+export function vitestWebContainers(): Vite.Plugin {
   return {
     name: "vitest:webcontainers",
     config(config, env) {
