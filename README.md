@@ -26,14 +26,14 @@ $ npm install --save-dev vitest @vitest/browser
 
 ## Configuration
 
-Add `vitestWebcontainers` plugin in your Vitest config and enable browser mode:
+Add `vitestWebContainers` plugin in your Vitest config and enable browser mode:
 
 ```ts
 import { defineConfig } from "vitest/config";
-import { vitestWebcontainers } from "@webcontainer/test/plugin";
+import { vitestWebContainers } from "@webcontainer/test/plugin";
 
 export default defineConfig({
-  plugins: [vitestWebcontainers()],
+  plugins: [vitestWebContainers()],
   test: {
     browser: {
       enabled: true,
