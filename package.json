@@ -55,13 +55,13 @@
   "devDependencies": {
     "@blitz/eslint-plugin": "^0.1.4",
     "@types/node": "^22.14.0",
-    "@vitest/browser": "^3.1.1",
+    "@vitest/browser": "^3.2.1",
     "eslint": "^9.24.0",
     "playwright": "^1.52.0",
     "prettier": "^3.5.3",
     "tsup": "^8.4.0",
     "typescript": "^5.8.3",
-    "vitest": "^3.1.1"
+    "vitest": "^3.2.1"
   },
   "prettier": {}
 }
