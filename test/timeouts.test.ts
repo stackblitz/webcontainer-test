@@ -1,9 +1,14 @@
 import { WebContainer as WebContainerApi } from "@webcontainer/api";
-import { expect, test, vi } from "vitest";
+import { expect, onTestFinished, test, vi } from "vitest";
 
 import { WebContainer } from "../src/fixtures/webcontainer";
 
 test("throws when WebContainer boot timeouts", async () => {
+  onTestFinished(() => {
+    vi.restoreAllMocks();
+    vi.useRealTimers();
+  });
+
   vi.spyOn(WebContainerApi, "boot").mockReturnValue(new Promise(() => null));
   vi.useFakeTimers();
 

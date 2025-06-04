@@ -7,6 +7,10 @@ export default defineConfig({
   test: {
     reporters: "verbose",
 
+    // browser instances are running parallel, so they take 200% of the CPU count. Lower the amount to reduce resource usage
+    maxWorkers: "50%",
+    minWorkers: "50%",
+
     browser: {
       enabled: true,
       provider: "playwright",
@@ -15,7 +19,6 @@ export default defineConfig({
         { browser: "firefox", name: "Firefox" },
       ],
       headless: true,
-      isolate: false,
     },
   },
 });
