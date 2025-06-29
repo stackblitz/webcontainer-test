@@ -1,3 +1,4 @@
+import type {} from "vitest/config";
 import type { Vite } from "vitest/node";
 import { readDirectory } from "./commands";
 
