@@ -1,4 +1,4 @@
-import { type Locator, page } from "@vitest/browser/context";
+import { type Locator, page } from "vitest/browser";
 
 const TEST_ID = "webcontainers-iframe";
 

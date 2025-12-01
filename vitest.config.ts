@@ -1,3 +1,4 @@
+import { playwright } from "@vitest/browser-playwright";
 import { defineConfig } from "vitest/config";
 import { vitestWebContainers } from "./src/plugin";
 
@@ -9,11 +10,10 @@ export default defineConfig({
 
     // browser instances are running parallel, so they take 200% of the CPU count. Lower the amount to reduce resource usage
     maxWorkers: "50%",
-    minWorkers: "50%",
 
     browser: {
       enabled: true,
-      provider: "playwright",
+      provider: playwright(),
       instances: [
         { browser: "chromium", name: "Chromium" },
         { browser: "firefox", name: "Firefox" },

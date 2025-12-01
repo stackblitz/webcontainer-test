@@ -21,12 +21,12 @@ $ npm install --save-dev @webcontainer/test
 Vitest is also required as peer dependency.
 
 ```sh
-$ npm install --save-dev vitest @vitest/browser
+$ npm install --save-dev vitest
 ```
 
 ## Configuration
 
-Add `vitestWebContainers` plugin in your Vitest config and enable browser mode:
+Add `vitestWebContainers` plugin in your Vitest config and [enable browser mode](https://vitest.dev/guide/browser/#manual-installation):
 
 ```ts
 import { defineConfig } from "vitest/config";

@@ -1,9 +1,9 @@
-import { commands } from "@vitest/browser/context";
 import type {
   FileSystemTree,
   BufferEncoding,
   WebContainer,
 } from "@webcontainer/api";
+import { commands } from "vitest/browser";
 
 export class FileSystem {
   /** @internal */
