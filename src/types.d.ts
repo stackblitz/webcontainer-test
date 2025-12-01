@@ -1,6 +1,6 @@
-import type {} from "@vitest/browser/context";
+import type {} from "vitest/browser";
 
-declare module "@vitest/browser/context" {
+declare module "vitest/browser" {
   interface BrowserCommands {
     readDirectory: (directory: string) => Promise<string>;
   }
